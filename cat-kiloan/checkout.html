@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,300;0,400;0,700;1,700&display=swap"
+    rel="stylesheet">
+
+  <!-- Feather Icons -->
+  <script src="https://unpkg.com/feather-icons"></script>
+
+  <!-- My Style -->
+  <link rel="stylesheet" href="css/checkout.css">
+
+
+  <!-- AlpineJS -->
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+  <!-- App -->
+  <script src="src/app.js"></script>
+ 
+  <!-- Midtrans -->
+  <script type="text/javascript"
+  src="https://app.stg.midtrans.com/snap/snap.js"
+  data-client-key="Mid-client-VxBC-KJxvxBVmHrZ"></script>
+</head>
+
+<body>
+
+  <!-- Navbar start -->
+  <nav class="navbar" x-data>
+    <div class="logo">
+      <img src="image/logo (2).png" alt="Devkit" class="small-image">
+    </div>
+    <div class="navbar-nav">
+      <a href="index.html">Beranda</a>
+      <a href="produk.html">Produk</a>
+      <a href="index.html#order-steps">Cara Pemesanan</a>
+      <a href="index.html#about">Tentang Kami</a>
+    </div>
+
+    <div class="navbar-extra">
+      <a href="#" id="search-button"><i data-feather="search"></i></a>
+      <a href="#" id="shopping-cart-button"><i data-feather="shopping-cart"></i>
+      <span class="quantity-badge" x-show="$store.cart.quantity" x-text="$store.cart.quantity"></span>
+      </a>
+      <a href="profile.html" id="user"><i data-feather="user"></i></a>
+      <a href="#" id="hamburger-menu"><i data-feather="menu"></i></a>
+    </div>
+
+    <!-- Search Form start -->
+    <div class="search-form">
+      <input type="search" id="search-box" placeholder="Search here...">
+      <label for="search-box"><i data-feather="search"></i></label>
+    </div>
+    <!-- Search Form end -->
+
+    <!-- Shopping Cart start -->
+    <!-- <div class="shopping-cart">
+      <template x-for="(item, index) in $store.cart.items" x-keys="index">
+        <div class="cart-item">
+          <img :src="'http://localhost:3000' + item.gambar" alt="Gambar" :alt="item.nama" style="width: 80px; height: auto;">
+          <div class="item-detail">
+            <h3 x-text="item.name"></h3>
+            <div class="item-price">
+              <span x-text="rupiah(item.price)"></span> &times;
+              <button id="remove" @click="$store.cart.remove(item.id)">&minus;</button>
+              <span x-text="item.quantity"></span>
+              <button id="add" @click="$store.cart.add(item)">&plus;</button> &equals;
+              <span x-text="rupiah(item.total)"></span>
+            </div>
+          </div>
+        </div>
+      </template>
+      <h5 x-show="!$store.cart.items.length" style="margin-top: 1rem;">Anda tidak memiliki barang dalam keranjang belanja Anda.</h5>
+      <h4 x-show="$store.cart.items.length">Total : <span x-text="rupiah($store.cart.total)"></span></h4>
+
+      <div class="form-container" x-show="$store.cart.items.length">
+        <button class="lihat-keranjang-button" @click="window.location.href = 'cart.html'">Lihat Keranjang</button>
+      </div>      
+    </div> -->
+    <!-- Shopping Cart end -->
+  </nav>
+  <!-- Navbar end -->
+
+  <!-- Logo whatsApp -->
+  <a href="https://wa.me/6285773153224" class="whatsapp-float" target="_blank" aria-label="Chat via WhatsApp">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" />
+  </a>
+
+
+    <div class="container">
+      <!-- Formulir Kontak dan Pengantaran -->
+      <div class="form-section">
+        <h2>Kontak</h2>
+        <!-- Jika user belum login, tampilkan tombol login -->
+          <!-- <p><a href="user.html">Login</a></p> -->
+        <input type="email" id="email"placeholder="Masukan Email" required>
+        <div>
+          <input type="checkbox" id="subscribe" checked>
+          <label for="subscribe">Kirimi saya email berita dan penawaran</label>
+        </div>
+  
+        <h2>Pengantaran</h2>
+        <select>
+          <option>Indonesia</option>
+        </select>
+        <div class="input-group">
+          <input type="text" id="nama_depan" placeholder="Nama depan">
+          <input type="text" id="nama_belakang" placeholder="Nama belakang">
+        </div>
+        
+        <input type="text" id="alamat" placeholder="Alamat">
+        <input type="text" id="alamat_opsional" placeholder="Apartemen, suite, dsb. (opsional)">
+        <input type="text" id="kota" placeholder="Kota">
+        <div class="input-group">
+            <select id="provinsi">
+                <option>Aceh</option>
+                <option>Sumatera Utara</option>
+                <option>Sumatera Barat</option>
+                <option>Riau</option>
+                <option>Kepulauan Riau</option>
+                <option>Jambi</option>
+                <option>Sumatera Selatan</option>           
+                <option>Bengkulu</option>
+                <option>Lampung</option>
+                <option>Bangka Belitung</option>
+                <option>DKI Jakarta</option>
+                <option>Jawa Barat</option>
+                <option>Banten</option>
+                <option>Jawa Tengah</option>
+                <option>DI Yogyakarta</option>
+                <option>Jawa Timur</option>
+                <option>Kalimantan Barat</option>
+                <option>Kalimantan Tengah</option>
+                <option>Kalimantan Selatan</option>
+                <option>Kalimantan Timur</option>
+                <option>Kalimantan Utara</option>
+                <option>Sulawesi Utara</option>
+                <option>Gorontalo</option>
+                <option>Sulawesi Tengah</option>
+                <option>Sulawesi Barat</option>
+                <option>Sulawesi Selatan</option>
+                <option>Sulawesi Tenggara</option>
+                <option>Bali</option>
+                <option>NTB</option>
+                <option>NTT</option>
+                <option>Maluku</option>
+                <option>Maluku Utara</option>
+                <option>Papua</option>
+                <option>Papua Barat</option>
+                <option>Papua Tengah</option>
+                <option>Papua Pegunungan</option>
+                <option>Papua Barat Daya</option>
+              </select>
+              <input type="text" id="kode_pos" placeholder="Kode Pos">
+            </div>
+            
+            <input type="text" id="no_hp" placeholder="No Telepon">
+            
+            <button class="btn-bayar" onclick="checkout()">Bayar Sekarang</button>
+      </div>
+  
+      <!-- Ringkasan Belanja -->
+<section x-data x-init="$store.cart.init()" class="summary-section">
+  <h2>Ringkasan Belanja</h2>
+
+  <template x-for="item in $store.cart.items" :key="item.id">
+    <div class="item">
+      <div class="item-info">
+        <img :src="item.gambar.startsWith('/image/') 
+                        ? 'http://localhost:3000' + item.gambar 
+                        : 'http://localhost:3000/image/' + item.gambar" alt="Gambar" :alt="item.nama" style="width: 50px; height: auto;">
+        <div class="product-details">
+          <strong x-text="item.nama"></strong>
+          <small>x <span x-text="item.quantity"></span></small>
+        </div>
+      </div>
+      <div class="item-price" x-text="rupiah(item.harga * item.quantity)"></div>
+    </div>
+  </template>
+
+  <div class="subtotal">
+    <span>Subtotal</span>
+    <span x-text="rupiah($store.cart.total)"></span>
+  </div>
+
+  <div class="total">
+    <span>Total Bayar</span>
+    <span x-text="rupiah($store.cart.total)"></span>
+  </div>
+</section>
+
+    <div class="btn">
+        <a href="cart.html" class="btn-primary">Kembali</a>
+    </div>
+    </div>
+  
+   <!-- Footer start -->
+  <footer>
+    <div class="footer-wrapper">
+      <div class="footer-left">
+        <img src="image/logo (2).png" alt="Logo Toko" />
+        <div class="address">
+          <p>📍 Jl. Ciherang Sukamulya, Kec. Ciomas, Kab. Bogor</p>
+          <p>🕒 Buka: Senin–Minggu, 08:00–17:00</p>
+          <p>📞 (+62) 856-9116-2616</p>
+        </div>
+      </div>
+  
+      <div class="footer-right">
+        <h3>Menu Cepat</h3>
+        <ul>
+          <li><a href="index.html">Beranda</a></li>
+          <li><a href="produk.html">Produk</a></li>
+          <li><a href="index.html#order-steps">Cara Pemesanan</a></li>
+          <li><a href="index.html#about">Tentang Kami</a></li>
+        </ul>
+      </div>
+    </div>
+  
+    <div class="copyright">
+      <p>Created by <b>TokoCatKiloanRizki.</b> | &copy; 2025.</p>
+    </div>
+  </footer>
+  <!-- Footer end -->
+
+  <!-- Feather Icons -->
+  <script>
+    feather.replace()
+  </script>
+
+  <!-- Linking swiperjs script -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+  <!-- My Javascript -->
+  <script src="js/script.js"></script>
+</body>
+
+</html>
+  

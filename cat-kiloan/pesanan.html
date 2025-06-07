@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Menu Pesanan</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,300;0,400;0,700;1,700&display=swap"
+    rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Style -->
+    <link rel="stylesheet" href="css/pesanan.css">
+
+    <!-- Alpine JS -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    
+</head>
+<body>
+    <body x-data="dashboard()" x-init="fetchProducts()">
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>Admin Dashboard</h2>
+            </div>
+            <div class="sidebar-menu">
+                <div class="menu-item">
+                    <i class="fas fa-box"></i>
+                    <a href="admin.html" class="menu-link">Produk</a>
+                </div>
+                
+                <div class="menu-item active">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Pesanan</span>
+                </div>
+
+                <div class="menu-item">
+                    <i class="fas fa-users"></i>
+                    <span>Pelanggan</span>
+                </div>
+                <div class="menu-item">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Laporan</span>
+                </div>
+                <div class="menu-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Pengaturan</span>
+                </div>
+                <div class="menu-item">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h1>Daftar Pesanan</h1>
+                <div class="user-profile">
+                    <div class="user-avatar">AD</div>
+                    <span>Admin</span>
+                </div>
+            </div>
+
+            <!-- Alert Message -->
+            <div x-show="showAlert" x-transition class="alert" :class="alertType">
+                <i :class="alertIcon"></i>
+                <span x-text="alertMessage"></span>
+            </div>
+
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <div class="filter-group">
+                <label for="status-filter">Filter Status:</label>
+                <select id="status-filter">
+                    <option value="all">Semua Status</option>
+                    <option value="diproses">Diproses</option>
+                    <option value="dikirim">Dikirim</option>
+                    <option value="selesai">Selesai</option>
+                    <option value="dibatalkan">Dibatalkan</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="date-filter">Filter Tanggal:</label>
+                <input type="date" id="date-filter">
+            </div>
+            
+            <button class="filter-button">Terapkan Filter</button>
+            <button class="reset-button">Reset Filter</button>
+        </div>
+        
+        <!-- Orders Table -->
+        <table class="orders-table">
+            <thead>
+                <tr>
+                    <th>ID Pesanan</th>
+                    <th>Nama Pelanggan</th>
+                    <th>Tanggal</th>
+                    <th>Total Harga</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>ORD-001</td>
+                    <td>Budi Santoso</td>
+                    <td>15 Mei 2023</td>
+                    <td>Rp 250.000</td>
+                    <td><span class="status-badge status-diproses">Diproses</span></td>
+                    <td>
+                        <button class="action-button detail-button"><i class="fas fa-eye"></i> Detail</button>
+                        <button class="action-button status-button"><i class="fas fa-sync-alt"></i> Ubah Status</button>
+                    </td>
+                </tr>
+                <!-- <tr>
+                    <td>ORD-002</td>
+                    <td>Ani Wijaya</td>
+                    <td>16 Mei 2023</td>
+                    <td>Rp 180.000</td>
+                    <td><span class="status-badge status-dikirim">Dikirim</span></td>
+                    <td>
+                        <button class="action-button detail-button"><i class="fas fa-eye"></i> Detail</button>
+                        <button class="action-button status-button"><i class="fas fa-sync-alt"></i> Ubah Status</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>ORD-003</td>
+                    <td>Citra Dewi</td>
+                    <td>17 Mei 2023</td>
+                    <td>Rp 320.000</td>
+                    <td><span class="status-badge status-selesai">Selesai</span></td>
+                    <td>
+                        <button class="action-button detail-button"><i class="fas fa-eye"></i> Detail</button>
+                        <button class="action-button status-button"><i class="fas fa-sync-alt"></i> Ubah Status</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>ORD-004</td>
+                    <td>Doni Pratama</td>
+                    <td>18 Mei 2023</td>
+                    <td>Rp 150.000</td>
+                    <td><span class="status-badge status-dibatalkan">Dibatalkan</span></td>
+                    <td>
+                        <button class="action-button detail-button"><i class="fas fa-eye"></i> Detail</button>
+                        <button class="action-button status-button"><i class="fas fa-sync-alt"></i> Ubah Status</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>ORD-005</td>
+                    <td>Eka Putri</td>
+                    <td>19 Mei 2023</td>
+                    <td>Rp 275.000</td>
+                    <td><span class="status-badge status-diproses">Diproses</span></td>
+                    <td>
+                        <button class="action-button detail-button"><i class="fas fa-eye"></i> Detail</button>
+                        <button class="action-button status-button"><i class="fas fa-sync-alt"></i> Ubah Status</button>
+                    </td>
+                </tr> -->
+            </tbody>
+        </table>
+        
+        <!-- Pagination -->
+        <div class="pagination">
+            <button class="pagination-button" disabled><i class="fas fa-chevron-left"></i></button>
+            <button class="pagination-button active">1</button>
+            <button class="pagination-button">2</button>
+            <button class="pagination-button">3</button>
+            <button class="pagination-button"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </div>
+    
+    <!-- Modal for Change Status -->
+    <div class="modal" id="status-modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Ubah Status Pesanan</h2>
+            <p>ID Pesanan: <strong>ORD-001</strong></p>
+            <div class="status-options">
+                <label class="status-option">
+                    <input type="radio" name="status" value="diproses" checked>
+                    <span class="status-badge status-diproses">Diproses</span>
+                </label>
+                <label class="status-option">
+                    <input type="radio" name="status" value="dikirim">
+                    <span class="status-badge status-dikirim">Dikirim</span>
+                </label>
+                <label class="status-option">
+                    <input type="radio" name="status" value="selesai">
+                    <span class="status-badge status-selesai">Selesai</span>
+                </label>
+                <label class="status-option">
+                    <input type="radio" name="status" value="dibatalkan">
+                    <span class="status-badge status-dibatalkan">Dibatalkan</span>
+                </label>
+            </div>
+            <button class="save-button">Simpan Perubahan</button>
+        </div>
+    </div>
+    
+    <script>
+  const menuItems = document.querySelectorAll('.menu-item');
+  const currentPage = window.location.pathname.split('/').pop();
+
+  menuItems.forEach(item => {
+    const href = item.getAttribute('href');
+    if (href === currentPage) {
+      item.classList.add('active');
+    }
+  });
+</script>
+
+
+</body>
+</html>

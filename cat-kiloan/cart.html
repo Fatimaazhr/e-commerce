@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Keranjang Belanja - Toko Cat Kiloan Rizki</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,300;0,400;0,700;1,700&display=swap"
+    rel="stylesheet">
+
+  <!-- Feather Icons -->
+  <script src="https://unpkg.com/feather-icons"></script>
+
+  <!-- My Style -->
+  <link rel="stylesheet" href="css/cart.css">
+
+  <!-- AlpineJS -->
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+  <!-- App Logic -->
+  <script src="src/app.js"></script>
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar" x-data>
+    <div class="logo">
+      <img src="image/logo (2).png" alt="Devkit" class="small-image">
+    </div>
+    <div class="navbar-nav">
+      <a href="index.html">Beranda</a>
+      <a href="produk.html">Produk</a>
+      <a href="index.html#order-steps">Cara Pemesanan</a>
+      <a href="index.html#about">Tentang Kami</a>
+    </div>
+
+    <div class="navbar-extra">
+      <a href="#" id="search-button"><i data-feather="search"></i></a>
+      <a href="#" id="shopping-cart-button"><i data-feather="shopping-cart"></i>
+        <span class="quantity-badge" x-show="$store.cart.quantity" x-text="$store.cart.quantity"></span>
+      </a>
+      <a href="profile.html" id="user"><i data-feather="user"></i></a>
+      <a href="#" id="hamburger-menu"><i data-feather="menu"></i></a>
+    </div>
+  </nav>
+
+  <!-- Search Form start -->
+  <div class="search-form">
+    <input type="search" id="search-box" placeholder="Search here...">
+    <label for="search-box"><i data-feather="search"></i></label>
+  </div>
+  <!-- Search Form end -->
+
+  <!-- Logo whatsApp -->
+  <a href="https://wa.me/6285773153224" class="whatsapp-float" target="_blank" aria-label="Chat via WhatsApp">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" />
+  </a>
+
+  <nav class="checkout-steps">
+    <ul>
+      <li class="active">Keranjang Belanja</li>
+      <li>Lanjutkan ke pembayaran</li>
+      <li>Pesanan Selesai</li>
+    </ul>
+  </nav>
+  
+
+  <!-- Produk Section -->
+<div class="page-wrapper">
+<main>
+<section class="cart-section" x-data="cart" x-init="init()">
+  <div class="cart-layout">
+    <div class="cart-container" x-show="$store.cart.items.length > 0">
+      <template x-for="(item, index) in $store.cart.items" :key="index">
+        <div class="cart-item">
+          <img :src="item.gambar.startsWith('/image/') 
+                        ? 'http://localhost:3000' + item.gambar 
+                        : 'http://localhost:3000/image/' + item.gambar" alt="Gambar" class="card-img-top" :alt="item.nama">
+          <div class="item-details">
+            <h3 x-text="item.nama"></h3>
+            <p class="item-price">
+              <span x-text="rupiah(item.harga)"></span> &times;
+              <button id="remove" @click="$store.cart.remove(item.id)">&minus;</button>
+              <span x-text="item.quantity"></span>
+              <button id="add" @click="$store.cart.add(item)">&plus;</button> &equals;
+              <span x-text="rupiah(item.harga * item.quantity)"></span>
+            </p>
+            <button class="hapus-item" @click="if(confirm('Yakin ingin menghapus semua?'))$store.cart.removeAll(item.id)" x-init="feather.replace()">
+              <i data-feather="trash-2"></i>
+            </button>
+          </div>
+        </div>
+      </template>
+    </div>
+
+
+    <div class="empty-cart" x-show="$store.cart.items.length === 0">
+      <p>Anda tidak memiliki barang dalam keranjang belanja Anda.</p>
+    </div>
+
+    <div class="cart-total" x-show="$store.cart.items.length > 0">
+      <h2>Total Keseluruhan</h2>
+
+      <div class="cart-row" x-for="(item, index) in $store.cart.items" :key="index">
+        <span>Jumlah Barang</span>
+        <span class="a" x-text="$store.cart.quantity"></span>
+      </div>
+
+      <div class="cart-row">
+        <span>Jumlah Harga</span>
+        <span class="a" x-text="rupiah($store.cart.total)"></span>
+      </div>
+
+      <div class="cart-row total-row">
+        <span>Total Harga :</span>
+        <span x-text="rupiah($store.cart.total)"></span>
+      </div>
+
+      <button class="checkout-button" @click="window.location.href = 'checkout.html'">Checkout</button>
+    </div>
+  </div>
+</section>
+</main>
+
+  <!-- Footer start -->
+  <footer>
+    <div class="footer-wrapper">
+      <div class="footer-left">
+        <img src="image/logo (2).png" alt="Logo Toko" />
+        <div class="address">
+          <p>📍 Jl. Ciherang Sukamulya, Kec. Ciomas, Kab. Bogor</p>
+          <p>🕒 Buka: Senin–Minggu, 08:00–17:00</p>
+          <p>📞 (+62) 856-9116-2616</p>
+        </div>
+      </div>
+  
+      <div class="footer-right">
+        <h3>Menu Cepat</h3>
+        <ul>
+          <li><a href="index.html">Beranda</a></li>
+          <li><a href="produk.html">Produk</a></li>
+          <li><a href="index.html#order-steps">Cara Pemesanan</a></li>
+          <li><a href="index.html#about">Tentang Kami</a></li>
+        </ul>
+      </div>
+    </div>
+  
+    <div class="copyright">
+      <p>Created by <b>TokoCatKiloanRizki.</b> | &copy; 2025.</p>
+    </div>
+  </footer>
+   </div>
+  <!-- Footer end -->
+
+  <!-- Feather Icons -->
+  <script>
+    feather.replace()
+  </script>
+
+  <!-- Custom JS -->
+  <script src="js/script.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Toko Cat Kiloan Rizki</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,300;0,400;0,700;1,700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+  <!-- Feather Icons -->
+  <script src="https://unpkg.com/feather-icons"></script>
+
+  <!-- My Style -->
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- Linking swiperjs css -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+
+  <!-- AlpineJS -->
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+  <!-- App -->
+  <script src="src/app.js"></script>
+</head>
+
+<body>
+
+  <!-- Navbar start -->
+  <nav class="navbar" x-data>
+    <div class="logo">
+      <img src="image/logo (2).png" alt="Devkit" class="small-image">
+    </div>
+    <div class="navbar-nav">
+      <a href="#beranda">Beranda</a>
+      <a href="produk.html">Produk</a>
+      <a href="#order-steps">Cara Pemesanan</a>
+      <a href="#about">Tentang Kami</a>
+    </div>
+
+    <div class="navbar-extra">
+      <a href="#" id="search-button"><i data-feather="search"></i></a>
+      <a href="#" id="shopping-cart-button"><i data-feather="shopping-cart"></i>
+      <span class="quantity-badge" x-show="$store.cart.quantity" x-text="$store.cart.quantity"></span>
+      </a>
+      <a href="profile.html" id="user"><i data-feather="user"></i></a>
+      <a href="#" id="hamburger-menu"><i data-feather="menu"></i></a>
+    </div>
+
+    <!-- Search Form start -->
+    <div class="search-form">
+      <input type="search" id="search-box" placeholder="Search here...">
+      <label for="search-box"><i data-feather="search"></i></label>
+    </div>
+    <!-- Search Form end -->
+
+    <!-- Shopping Cart start -->
+<div class="shopping-cart">
+  <template x-for="(item, index) in $store.cart.items" :key="index">
+    <div class="cart-item">
+      <img :src="item.gambar.startsWith('/image/') 
+                        ? 'http://localhost:3000' + item.gambar 
+                        : 'http://localhost:3000/image/' + item.gambar" alt="Gambar" :alt="item.nama" style="width: 50px; height: auto;">
+      <div class="item-detail">
+        <h3 x-text="item.nama"></h3>
+        <p class="item-price">
+              <span x-text="rupiah(item.harga)"></span> &times;
+              <button id="remove" @click="$store.cart.remove(item.id)">&minus;</button>
+              <span x-text="item.quantity"></span>
+              <button id="add" @click="$store.cart.add(item)">&plus;</button> &equals;
+              <span x-text="rupiah(item.harga * item.quantity)"></span>
+            </p>
+      </div>
+    </div>
+  </template>
+
+  <h5 x-show="!$store.cart.items.length" style="margin-top: 1rem;">
+    Anda tidak memiliki barang dalam keranjang belanja Anda.
+  </h5>
+
+  <h4 x-show="$store.cart.items.length">
+    Total : <span x-text="formatCurrency($store.cart.total)"></span>
+  </h4>
+
+  <div class="form-container" x-show="$store.cart.items.length">
+    <button class="lihat-keranjang-button" @click="window.location.href = 'cart.html'">
+      Lihat Keranjang
+    </button>
+  </div>
+</div>
+<!-- Shopping Cart end -->
+
+</nav>
+<!-- Navbar end -->
+
+<!-- Logo whatsApp -->
+<a href="https://wa.me/6285773153224" class="whatsapp-float" target="_blank" aria-label="Chat via WhatsApp">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" />
+</a>
+
+<!-- Hero Section start -->
+<section class="hero" id="beranda">
+  <div class="mask-container">
+    <main class="content">
+      <h1>Wujudkan Rumah Impian <span>Tanpa Khawatir Biaya!</span></h1>
+      <p>Cat Kiloan Murah & Berkualitas Siap Merubah Tampilan Rumahmu!</p>
+      <a href="#products" class="cta">Cari Warna</a>
+    </main>
+  </div>
+</section>
+<!-- Hero Section end -->
+
+<!-- Products Section start -->
+<section class="products" id="products" x-data="products">
+  <h2><span>Produk</span> Kami</h2>
+  <p>Aneka produk cat terbaik</p>
+
+  <div class="product-container swiper">
+    <div class="swiper-wrapper">
+      <template x-for="(item, index) in $store.products.items" :key="index">
+        <div class="swiper-slide">
+          <div class="product-card">
+            <img :src="item.gambar.startsWith('/image/') 
+                        ? 'http://localhost:3000' + item.gambar 
+                        : 'http://localhost:3000/image/' + item.gambar" class="card-img-top" :alt="item.nama">
+            <div class="card-body">
+              <p class="badge">Best Value</p>
+              <h2 class="product-title" x-text="item.nama"></h2>
+              <p class="product-description">
+                Pilihan cat kiloan ekonomis dengan kualitas terbaik, mudah diaplikasikan dan awet untuk segala jenis permukaan.
+              </p>
+              <p class="product-price" x-text="rupiah(item.harga)"></p>
+              <div class="button-container">
+                <a :href="`detail.html?id=${item.id}`" class="btn-primary">Lihat Produk</a>
+                <a href="#" class="add-to-cart" @click.prevent="$store.cart.add(item)">
+                  <svg
+                    width="24"
+                    height="24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <use href="image/feather-sprite.svg#shopping-cart" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+    </div>
+
+    <!-- Navigasi Swiper -->
+    <div class="swiper-pagination"></div>
+    <div class="swiper-slide-button swiper-button-prev"></div>
+    <div class="swiper-slide-button swiper-button-next"></div>
+  </div>
+</section>
+<!-- Products Section end -->
+
+
+ <!-- Order Steps Section -->
+<section class="order-steps" id="order-steps">
+  <div class="order-steps-container">
+    <div class="section-title">
+      <h2><span>Cara Memesan</span> Cat Kiloan</h2>
+      <p>Cara mudah pesan cat di TokoCatKiloanRizki</p>
+    </div>
+
+    <div class="steps-container">
+      <div class="step-card-1">
+        <div class="step-number">1</div>
+        <h3>Pilih Produk</h3>
+        <p>Lihat koleksi produk kami dan tentukan warna dan jumlah yang Anda butuhkan.</p>
+      </div>
+
+      <div class="step-card-2">
+        <div class="step-number">2</div>
+        <h3>Hubungi Kami</h3>
+        <p>Hubungi kami via WhatsApp atau email untuk memastikan ketersediaan produk.</p>
+      </div>
+
+      <div class="step-card-3">
+        <div class="step-number">3</div>
+        <h3>Konfirmasi Pesanan</h3>
+        <p>Kami akan mengkonfirmasi pesanan Anda dan memberikan detail pembayaran.</p>
+      </div>
+
+      <div class="step-card-4">
+        <div class="step-number">4</div>
+        <h3>Pembayaran</h3>
+        <p>Lakukan pembayaran melalui transfer bank atau metode pembayaran lain yang tersedia.</p>
+      </div>
+
+      <div class="step-card-5">
+        <div class="step-number">5</div>
+        <h3>Pengiriman</h3>
+        <p>Pesanan akan dikirim ke alamat Anda dalam waktu 1-3 hari kerja setelah pembayaran.</p>
+      </div>
+
+      <div class="step-card-6">
+        <div class="step-number">6</div>
+        <h3>Penerimaan</h3>
+        <p>Produk sampai di tangan Anda dan siap digunakan untuk mempercantik rumah.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+ <!-- About Section start -->
+<section id="about" class="about">
+  <div class="container">
+    <div class="section-header">
+      <h2><span>Tentang</span> Kami</h2>
+      <p class="section-subtitle">Solusi cat berkualitas untuk rumah indah Anda</p>
+    </div>
+
+    <div class="row">
+      <!-- Gambar di sebelah kiri -->
+      <div class="about-img">
+        <img src="image/tentang-kami.jpg" alt="Tentang Kami" class="img-fluid">
+        <div class="experience-badge">
+          <span>10+ Tahun</span>
+          <small>Pengalaman</small>
+        </div>
+      </div>
+
+      <!-- Konten di sebelah kanan -->
+      <div class="content">
+        <h3>Kenapa memilih cat kiloan kami?</h3>
+        <!-- <p class="intro-text">Kami berkomitmen menyediakan produk cat tembok berkualitas dengan harga terjangkau untuk memenuhi kebutuhan properti Anda.</p> -->
+        
+        <div class="card-container">
+          <div class="card">
+            <div class="card-icon">
+              <i class="fas fa-tag"></i>
+            </div>
+            <div class="card-content">
+              <h4>Harga Murah</h4>
+              <p>Dapatkan cat berkualitas dengan harga lebih hemat hingga 30% dibanding merk lain.</p>
+            </div>
+          </div>
+          
+          <div class="card">
+            <div class="card-icon">
+              <i class="fas fa-award"></i>
+            </div>
+            <div class="card-content">
+              <h4>Kualitas Premium</h4>
+              <p>Daya rekat kuat, warna tahan lama, dan hasil akhir sempurna untuk dinding Anda.</p>
+            </div>
+          </div>
+          
+          <div class="card">
+            <div class="card-icon">
+              <i class="fas fa-palette"></i>
+            </div>
+            <div class="card-content">
+              <h4>100+ Warna</h4>
+              <p>Pilihan warna lengkap dengan sistem pencampuran presisi untuk hasil akurat.</p>
+            </div>
+          </div>
+          
+          <div class="card">
+            <div class="card-icon">
+              <i class="fas fa-shield-alt"></i>
+            </div>
+            <div class="card-content">
+              <h4>Perlindungan Maksimal</h4>
+              <p>Formulasi khusus melindungi tembok dari cuaca ekstrim dan kelembaban.</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- <a href="#contact" class="cta-button">Hubungi Kami</a> -->
+      </div>
+    </div>
+  </div>
+</section>
+<!-- About Section end -->
+
+  <!-- Footer start -->
+  <footer>
+    <div class="footer-wrapper">
+      <div class="footer-left">
+        <img src="image/logo (2).png" alt="Logo Toko" />
+        <div class="address">
+          <p>📍 Jl. Ciherang Sukamulya, Kec. Ciomas, Kab. Bogor</p>
+          <p>🕒 Buka: Senin–Minggu, 08:00–17:00</p>
+          <p>📞 (+62) 856-9116-2616</p>
+        </div>
+      </div>
+  
+      <div class="footer-right">
+        <h3>Menu Cepat</h3>
+        <ul>
+          <li><a href="#">Beranda</a></li>
+          <li><a href="produk.html">Produk</a></li>
+          <li><a href="#order-steps">Cara Pemesanan</a></li>
+          <li><a href="#about">Tentang Kami</a></li>
+        </ul>
+      </div>
+    </div>
+  
+    <div class="copyright">
+      <p>Created by <b>TokoCatKiloanRizki.</b> | &copy; 2025.</p>
+    </div>
+  </footer>
+  <!-- Footer end -->
+
+  <!-- Modal Box Item Detail start -->
+  <div class="modal" id="item-detail-modal">
+    <div class="modal-container">
+      <a href="#" class="close-icon"><i data-feather="x"></i></a>
+      <div class="modal-content">
+        <img src="image/001.jpg" alt="Product 1">
+        <div class="product-content">
+          <h3>001 - Kemasan Cat Kiloan</h3>
+          <p>Hadir dengan kualitas terbaik, kemasan cat kiloan ini dirancang untuk menjaga cat tetap segar dan mudah digunakan. 
+            Terbuat dari bahan berkualitas tinggi, kemasan ini aman, praktis, dan cocok untuk kebutuhan pengecatan rumah atau proyek Anda.</p>
+          <div class="product-price">Rp13.000</div>
+          <a href="#"><i data-feather="shopping-cart"></i> <span>Add to cart</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal Box Item Detail end -->
+
+  <!-- Feather Icons -->
+  <script>
+    feather.replace()
+  </script>
+
+  <!-- Linking swiperjs script -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+  <!-- My Javascript -->
+  <script src="js/script.js"></script>
+</body>
+
+</html>
