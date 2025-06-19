@@ -7,6 +7,7 @@ const protect = require('./middleware/authMiddleware');  // Mengimpor middleware
 const app = express();
 const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productRoutes');
+const pelangganRoutes = require('./routes/pelangganRoutes');
 const upload = require('./middleware/uploadMiddleware'); // Import middleware upload
 
 
@@ -21,6 +22,9 @@ app.use('/api', userRoutes);
 
 // Routing Produk
 app.use('/api/product', productRoutes);
+
+// Routing pelanggan checout
+app.use('/api/pelanggan', pelangganRoutes);
 
 // Akses gambar statis
 app.use('/image', express.static(path.join(__dirname, '../public/image')));
