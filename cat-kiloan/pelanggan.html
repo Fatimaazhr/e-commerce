@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Pelanggan</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,300;0,400;0,700;1,700&display=swap"
+    rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Style -->
+    <link rel="stylesheet" href="css/pelanggan.css">
+
+    <!-- Alpine JS -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- App Logic -->
+    <script src="src/app.js"></script>
+    <script src="js/pelanggan.js"></script>
+
+</head>
+<body x-data="dashboard()" x-init="fetchProducts()">
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>Admin Dashboard</h2>
+            </div>
+            <div class="sidebar-menu">
+                <div class="menu-item">
+                    <i class="fas fa-home"></i>
+                    <a href="dashboard.html" class="menu-link">Dashboard</a>
+                </div>
+
+                <div class="menu-item">
+                    <i class="fas fa-box"></i>
+                    <a href="produk.html" class="menu-link">Produk</a>
+                </div>
+
+                <div class="menu-item">
+                    <i class="fas fa-shopping-cart"></i>
+                    <a href="pesanan.html" class="menu-link">Pesanan</a>
+                </div>
+                <div class="menu-item active">
+                    <i class="fas fa-users"></i>
+                    <span>Pelanggan</span>
+                </div>
+                <div class="menu-item">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Laporan</span>
+                </div>
+                <!-- <div class="menu-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Pengaturan</span>
+                </div> -->
+                <div class="menu-item" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h1>Manajemen Pelanggan</h1>
+                <div class="user-profile">
+                    <div class="user-avatar">AD</div>
+                    <span>Admin</span>
+                </div>
+            </div>
+
+            <!-- Alert Message -->
+            <div x-show="showAlert" x-transition class="alert" :class="alertType">
+                <i :class="alertIcon"></i>
+                <span x-text="alertMessage"></span>
+            </div>
+
+            <!-- Products Table -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="search-container">
+            <div class="search-box">
+                <span class="search-icon icon">🔍</span>
+                <input type="text" id="searchInput" placeholder="Cari pelanggan...">
+            </div>
+            </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nama Pelanggan</th>
+                                <th>Email</th>
+                                <th>Telepon</th>
+                                <th>Tanggal Bergabung</th>
+                                <th>Jumlah Pesanan</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Andi Saputra</td>
+                        <td>andi@example.com</td>
+                        <td>081234567890</td>
+                        <td>2023-05-01</td>
+                        <td><span class="badge badge-success">5</span></td>
+                        <td>Aktif</td>
+                        <td>
+                        <button class="status-button"
+                        title="Lihat Riwayat"
+                        data-name="Andi Saputra"
+                        data-email="andi@example.com"
+                        data-phone="081234567890"
+                        data-join="2023-05-01"
+                        data-orders='[{"produk":"Cat Merah","tanggal":"2024-04-01"},{"produk":"Cat Biru","tanggal":"2024-04-10"}]'>
+                        <i class="fas fa-eye"></i>
+                    </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Riwayat Pesanan -->
+<div id="historyModal" class="modal" style="display: none;">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 class="modal-title" id="customerNameTitle">Riwayat Pesanan</h2>
+      <span class="close">&times;</span>
+    </div>
+    <div class="modal-body">
+      <div class="customer-info" id="customerInfo">
+        <!-- Info pelanggan muncul di sini -->
+      </div>
+      <div class="order-history" id="orderHistory">
+        <!-- Riwayat pesanan muncul di sini -->
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

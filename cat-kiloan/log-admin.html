@@ -89,45 +89,47 @@
   </div>
 
   <script>
-  document.getElementById('adminLoginForm').addEventListener('submit', async function (e) {
-    e.preventDefault();
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('adminLoginForm');
 
-    const email = document.getElementById('username').value.trim();
-    const password = document.getElementById('password').value.trim();
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
 
-    if (!email || !password) {
-      alert("Email dan password harus diisi!");
-      return;
-    }
+      const email = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
 
-    try {
-      const response = await fetch('http://localhost:3000/api/admin/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email, password })
-      });
+      if (!email || !password) {
+        alert("Email dan password harus diisi!");
+        return;
+      }
 
-      const data = await response.json();
+      try {
+        const response = await fetch('http://localhost:3000/api/admin/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email, password })
+        });
 
-      if (response.ok) {
+        const data = await response.json();
+
+        if (!response.ok) {
+          alert(data.message || 'Login gagal');
+          return;
+        }
+
         alert("Login berhasil!");
-        // Simpan token ke localStorage/sessionStorage jika perlu
         localStorage.setItem('token', data.token);
 
-        // Redirect ke halaman admin
-        window.location.href = "admin.html";
-      } else {
-        alert(data.message || 'Login gagal');
+        window.location.href = "dashboard.html";
+
+      } catch (error) {
+        alert('Terjadi kesalahan jaringan');
+        console.error('Error:', error);
       }
-    } catch (error) {
-      alert('Terjadi kesalahan jaringan');
-      console.error(error);
-    }
+    });
   });
 </script>
-
-
 </body>
 </html>

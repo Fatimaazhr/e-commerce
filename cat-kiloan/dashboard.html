@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,300;0,400;0,700;1,700&display=swap"
+    rel="stylesheet"/>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/dashboard.css" />
+
+  <!-- Alpine JS -->
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+
+  <!-- Auth Check -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        window.location.href = "log-admin.html";
+      }
+    });
+  </script>
+</head>
+<body x-data="dashboard()" x-init="fetchProducts()">
+    <!-- <button id="toggleSidebar" class="toggle-sidebar-btn">
+  </button> -->
+  <div class="container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <h2>Admin Dashboard</h2>
+      </div>
+      <div class="sidebar-menu">
+        <div class="menu-item active">
+          <i class="fas fa-home"></i>
+          <span>Dashboard</span>
+        </div>
+        <div class="menu-item">
+          <i class="fas fa-box"></i>
+          <a href="admin-produk.html" class="menu-link">Produk</a>
+        </div>
+        <div class="menu-item">
+          <i class="fas fa-shopping-cart"></i>
+          <a href="pesanan.html" class="menu-link">Pesanan</a>
+        </div>
+        <div class="menu-item">
+          <i class="fas fa-users"></i>
+          <a href="pelanggan.html" class="menu-link">Pelanggan</a>
+        </div>
+        <div class="menu-item">
+          <i class="fas fa-chart-line"></i>
+          <span>Laporan</span>
+        </div>
+        <!-- <div class="menu-item">
+          <i class="fas fa-cog"></i>
+          <span>Pengaturan</span>
+        </div> -->
+        <div class="menu-item" id="logoutBtn">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>Logout</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dashboard Content -->
+    <div class="dashboard">
+      <!-- Welcome Banner -->
+      <div class="welcome-banner">
+        <div class="welcome-text">
+          <h1>Selamat Datang, Admin!</h1>
+          <p>
+            Anda memiliki 12 pesanan baru, 5 pesanan memerlukan tindakan, dan 3 pesanan belum diproses.
+          </p>
+        </div>
+        <div class="welcome-icon">
+          <i class="fas fa-chart-line fa-3x"></i>
+        </div>
+      </div>
+
+      <!-- Alert Message -->
+      <div x-show="showAlert" x-transition class="alert" :class="alertType">
+        <i :class="alertIcon"></i>
+        <span x-text="alertMessage"></span>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="stats">
+        <div class="stat-card">
+          <div class="stat-info">
+            <h3>Total Pendapatan</h3>
+            <h2>Rp 0</h2>
+          </div>
+          <div class="stat-icon">
+            <i class="fas fa-wallet"></i>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-info">
+            <h3>Pelanggan</h3>
+            <h2>0</h2>
+          </div>
+          <div class="stat-icon">
+            <i class="fas fa-users"></i>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-info">
+            <h3>Pesanan</h3>
+            <h2>0</h2>
+          </div>
+          <div class="stat-icon">
+            <i class="fas fa-shopping-cart"></i>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Charts -->
+      <div class="charts">
+        <div class="chart-container">
+            <div class="chart-header">
+            <h3>Statistik Pendapatan</h3>
+            <div class="chart-actions">
+                <button>Minggu</button>
+                <button>Bulan</button>
+                <button class="active">Tahun</button>
+            </div>
+            </div>
+            <div class="chart-wrapper">
+            <canvas id="revenueChart"></canvas>
+            </div>
+        </div>
+        
+        <div class="chart-container">
+            <div class="chart-header">
+            <h3>Status Pesanan</h3>
+            </div>
+            <div class="chart-wrapper">
+            <canvas id="orderStatusChart"></canvas>
+            </div>
+        </div>
+        </div>
+
+
+      <!-- Recent Activity -->
+      <div class="recent-activity">
+        <div class="activity-header">
+          <h3>Aktivitas Terbaru</h3>
+          <button>Lihat Semua</button>
+        </div>
+        <div class="activity-list">
+          <div class="activity-item">
+            <div class="activity-icon order">
+              <i class="fas fa-shopping-cart"></i>
+            </div>
+            <div class="activity-content">
+              <h4>Pesanan Baru</h4>
+              <p>Pesanan #ORD-00124 telah dibuat oleh Budi Santoso</p>
+            </div>
+            <div class="activity-time">10 menit lalu</div>
+          </div>
+
+          <div class="activity-item">
+            <div class="activity-icon payment">
+              <i class="fas fa-credit-card"></i>
+            </div>
+            <div class="activity-content">
+              <h4>Pembayaran Diterima</h4>
+              <p>Pembayaran untuk pesanan #ORD-00119 telah dikonfirmasi</p>
+            </div>
+            <div class="activity-time">1 jam lalu</div>
+          </div>
+
+          <div class="activity-item">
+            <div class="activity-icon user">
+              <i class="fas fa-user-plus"></i>
+            </div>
+            <div class="activity-content">
+              <h4>Pengguna Baru</h4>
+              <p>Siti Rahayu telah mendaftar sebagai pelanggan baru</p>
+            </div>
+            <div class="activity-time">3 jam lalu</div>
+          </div>
+
+          <div class="activity-item">
+            <div class="activity-icon system">
+              <i class="fas fa-sync-alt"></i>
+            </div>
+            <div class="activity-content">
+              <h4>Pembaruan Sistem</h4>
+              <p>Versi sistem diperbarui ke v2.3.1 dengan perbaikan bug</p>
+            </div>
+            <div class="activity-time">5 jam lalu</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+        
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="src/app.js"></script>
+  <script src="js/dashboard.js"></script>
+  
+</body>
+</html>
